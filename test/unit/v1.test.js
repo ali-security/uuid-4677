@@ -106,4 +106,12 @@ describe('v1', () => {
     v1(fullOptions, buffer, 16);
     assert.deepEqual(buffer, expectedBytes.concat(expectedBytes));
   });
+
+  test('throws RangeError for out-of-range indexes', () => {
+    const buf15 = new Uint8Array(15);
+    const buf30 = new Uint8Array(30);
+    assert.throws(() => v1({}, buf15), RangeError);
+    assert.throws(() => v1({}, buf30, -1), RangeError);
+    assert.throws(() => v1({}, buf30, 15), RangeError);
+  });
 });

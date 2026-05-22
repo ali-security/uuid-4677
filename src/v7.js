@@ -47,6 +47,16 @@ function v7(options, buf, offset) {
   let i = (buf && offset) || 0;
   const b = buf || new Uint8Array(16);
 
+  // Validate buffer bounds if buf is provided
+  if (buf) {
+    const off = offset || 0;
+    if (off < 0 || off + 16 > buf.length) {
+      throw new RangeError(
+        `UUID byte range ${off}:${off + 15} is out of buffer bounds`,
+      );
+    }
+  }
+
   // rnds is Uint8Array(16) filled with random bytes
   const rnds = options.random || (options.rng || rng)();
 

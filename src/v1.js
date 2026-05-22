@@ -19,6 +19,16 @@ function v1(options, buf, offset) {
   const b = buf || new Array(16);
 
   options = options || {};
+
+  // Validate buffer bounds if buf is provided
+  if (buf) {
+    const off = offset || 0;
+    if (off < 0 || off + 16 > buf.length) {
+      throw new RangeError(
+        `UUID byte range ${off}:${off + 15} is out of buffer bounds`,
+      );
+    }
+  }
   let node = options.node;
   let clockseq = options.clockseq;
 
